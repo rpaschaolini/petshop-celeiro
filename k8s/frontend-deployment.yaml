@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petshop-frontend
+  namespace: petshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petshop-frontend
+  template:
+    metadata:
+      labels:
+        app: petshop-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: petshop-frontend
+          ports:
+            - containerPort: 80

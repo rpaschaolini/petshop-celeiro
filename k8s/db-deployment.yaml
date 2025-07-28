@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petshop-db
+  namespace: petshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petshop-db
+  template:
+    metadata:
+      labels:
+        app: petshop-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:13
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "petshop"
+            - name: POSTGRES_USER
+              value: "usuario"
+            - name: POSTGRES_PASSWORD
+              value: "senha"

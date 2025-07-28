@@ -1,3 +1,4 @@
+#TESTE
 name: CI/CD Petshop Celeiro 🐶
 
 on:
@@ -34,4 +35,5 @@ jobs:
 
       - name: 📤 Push Frontend
         run: docker push $IMAGE_FRONTEND
+
 

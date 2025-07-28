@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: petshop-db
+  namespace: petshop
+spec:
+  selector:
+    app: petshop-db
+  ports:
+    - port: 5432
+      targetPort: 5432

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petshop-backend
+  namespace: petshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petshop-backend
+  template:
+    metadata:
+      labels:
+        app: petshop-backend
+    spec:
+      containers:
+        - name: backend
+          image: petshop-backend
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: "petshop-db"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "petshop"
+            - name: DB_USER
+              value: "usuario"
+            - name: DB_PASSWORD
+              value: "senha"
