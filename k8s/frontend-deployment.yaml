@@ -14,7 +14,7 @@ spec:
         app: petshop-frontend
     spec:
       containers:
-        - name: frontend
-          image: petshop-frontend
+        - name: petshop-frontend
+          image: docker.io/rpaschoalini/petshop-frontend:latest
           ports:
             - containerPort: 80

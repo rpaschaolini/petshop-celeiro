@@ -84,12 +84,15 @@
           <input type="number" class="form-control" id="quantidade" name="quantidade" min="1" required>
         </div>
         <div class="col">
-          <label for="pacote" class="form-label">Pacote</label>
-          <input type="text" class="form-control" id="pacote" name="pacote">
-        </div>
-        <div class="col">
-          <label for="avulso" class="form-label">Avulso</label>
-          <input type="text" class="form-control" id="avulso" name="avulso">
+          <label class="form-label d-block">Tipo de Serviço</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="tipo_servico" id="pacote" value="Pacote" checked>
+            <label class="form-check-label" for="pacote">Pacote</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="tipo_servico" id="avulso" value="Avulso">
+            <label class="form-check-label" for="avulso">Avulso</label>
+          </div>
         </div>
       </div>
 
@@ -139,12 +142,17 @@
 
       const form = e.target;
       const formData = new FormData(form);
-      const dados = Object.fromEntries(formData.entries());
 
-      dados.valor_pacote = parseFloat(dados.valor_pacote) || 0;
-      dados.valor_avulso = parseFloat(dados.valor_avulso) || 0;
-      dados.valor_total = parseFloat(dados.valor_total) || 0;
-      dados.pago = dados.pago === "true";
+      const dados = {
+        data_agendada: formData.get("data_agendada"),
+        cliente: formData.get("cliente"),
+        quantidade: parseInt(formData.get("quantidade")),
+        tipo_servico: formData.get("tipo_servico"),
+        valor_pacote: parseFloat(formData.get("valor_pacote")) || 0,
+        valor_avulso: parseFloat(formData.get("valor_avulso")) || 0,
+        valor_total: parseFloat(formData.get("valor_total")) || 0,
+        pago: formData.get("pago") === "true"
+      };
 
       const msg = document.getElementById("mensagem");
 

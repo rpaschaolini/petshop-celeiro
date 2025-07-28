@@ -14,18 +14,18 @@ spec:
         app: petshop-backend
     spec:
       containers:
-        - name: backend
-          image: petshop-backend
+        - name: petshop-backend
+          image: docker.io/rpaschoalini/petshop-backend:latest
           ports:
             - containerPort: 3000
           env:
             - name: DB_HOST
-              value: "petshop-db"
+              value: petshop-db
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME
-              value: "petshop"
+              value: petshop
             - name: DB_USER
-              value: "usuario"
+              value: usuario
             - name: DB_PASSWORD
-              value: "senha"
+              value: senha
