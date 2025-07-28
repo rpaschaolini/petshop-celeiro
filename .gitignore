@@ -1,0 +1,24 @@
+# Node.js
+node_modules/
+.env
+
+# Logs
+*.log
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Docker
+**/__pycache__/
+**/.DS_Store
+docker-compose.override.yml
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema
+*.swp

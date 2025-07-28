@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Agenda Petshop - Celeiro</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- AOS: Animate On Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <style>
+    body {
+      background-color: #ffeb00;
+      color: #000;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .header {
+      text-align: center;
+      background-color: #ff7300;
+      color: white;
+      padding: 1rem;
+    }
+    .form-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 800px;
+      margin: 2rem auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .btn-custom {
+      background-color: #000;
+      color: #fff;
+    }
+    .btn-custom:hover {
+      background-color: #333;
+    }
+    .msg {
+      font-weight: bold;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .animated-icon {
+      animation: wiggle 2s infinite;
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      75% { transform: rotate(-5deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header" data-aos="fade-down">
+    <img src="logo.png" alt="Petshop Celeiro" height="80" class="animated-icon">
+    <h1 class="mt-2"><i class="fa-solid fa-paw"></i> Agenda de Banho & Tosa</h1>
+  </div>
+
+  <div class="form-container" data-aos="zoom-in">
+    <form id="agendamentoForm">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="data" class="form-label">Data</label>
+          <input type="date" class="form-control" id="data" name="data_agendada" required>
+        </div>
+        <div class="col">
+          <label for="cliente" class="form-label">Cliente</label>
+          <input type="text" class="form-control" id="cliente" name="cliente" required>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <label for="quantidade" class="form-label">Qtd. de Pets</label>
+          <input type="number" class="form-control" id="quantidade" name="quantidade" min="1" required>
+        </div>
+        <div class="col">
+          <label for="pacote" class="form-label">Pacote</label>
+          <input type="text" class="form-control" id="pacote" name="pacote">
+        </div>
+        <div class="col">
+          <label for="avulso" class="form-label">Avulso</label>
+          <input type="text" class="form-control" id="avulso" name="avulso">
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <label for="valorPacote" class="form-label">Valor do Pacote (R$)</label>
+          <input type="number" step="0.01" class="form-control" id="valorPacote" name="valor_pacote">
+        </div>
+        <div class="col">
+          <label for="valorAvulso" class="form-label">Valor Avulso (R$)</label>
+          <input type="number" step="0.01" class="form-control" id="valorAvulso" name="valor_avulso">
+        </div>
+        <div class="col">
+          <label for="pago" class="form-label">Pago?</label>
+          <select class="form-select" id="pago" name="pago">
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="valorTotal" class="form-label">Valor Total (R$)</label>
+        <input type="number" step="0.01" class="form-control" id="valorTotal" name="valor_total">
+      </div>
+
+      <button type="submit" class="btn btn-custom w-100">
+        <i class="fa-solid fa-floppy-disk"></i> Cadastrar Agendamento
+      </button>
+    </form>
+
+    <div id="mensagem" class="msg mt-3"></div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+  <script>
+    document.getElementById("agendamentoForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const dados = Object.fromEntries(formData.entries());
+
+      dados.valor_pacote = parseFloat(dados.valor_pacote) || 0;
+      dados.valor_avulso = parseFloat(dados.valor_avulso) || 0;
+      dados.valor_total = parseFloat(dados.valor_total) || 0;
+      dados.pago = dados.pago === "true";
+
+      const msg = document.getElementById("mensagem");
+
+      try {
+        const response = await fetch("http://localhost:3000/agendamentos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+
+        if (response.ok) {
+          msg.innerHTML = "<span class='text-success'><i class='fa-solid fa-check'></i> Agendamento cadastrado com sucesso!</span>";
+          form.reset();
+        } else {
+          msg.innerHTML = "<span class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> Erro ao cadastrar.</span>";
+        }
+      } catch (err) {
+        msg.innerHTML = "<span class='text-danger'><i class='fa-solid fa-wifi'></i> Erro de conexão com o servidor.</span>";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
