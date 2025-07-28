@@ -34,3 +34,4 @@ jobs:
 
       - name: 📤 Push Frontend
         run: docker push $IMAGE_FRONTEND
+
